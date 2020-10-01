@@ -1,0 +1,566 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Mage SDK API Documentation",
+        "license": {
+            "name": "MIT"
+        },
+        "version": "1.0.3"
+    },
+    "paths": {
+        "/lumos": {
+            "post": {
+                "summary": "Analyze Purchase",
+                "operationId": "newPurchase",
+                "requestBody": {
+                    "description": "Purchased iap & current State of User",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "product",
+                                    "state"
+                                ],
+                                "type": "object",
+                                "properties": {
+                                    "product": {
+                                        "$ref": "#/components/schemas/product"
+                                    },
+                                    "state": {
+                                        "$ref": "#/components/schemas/state"
+                                    }
+                                }
+                            },
+                            "examples": {
+                                "purchase": {
+                                    "summary": "An example purchase send to lumos",
+                                    "value": {
+                                        "state": {
+                                            "time": 1593705685,
+                                            "appName": "AN EXAMPLE APP",
+                                            "bundleId": "com.example.example_app",
+                                            "deviceId": "unknown",
+                                            "isStrict": true,
+                                            "platform": "Google",
+                                            "timeZone": "GMT",
+                                            "storeCode": "US",
+                                            "appVersion": "1.0",
+                                            "deviceType": "Handset",
+                                            "isEmulator": true,
+                                            "systemName": "Android",
+                                            "buildNumber": 1,
+                                            "countryCode": "United States",
+                                            "deviceBrand": "Android",
+                                            "deviceModel": "Android SDK built for x86",
+                                            "currencyCode": "USD",
+                                            "isProduction": true,
+                                            "timeZoneCode": "GMT+00:00",
+                                            "systemVersion": "7.1.1"
+                                        },
+                                        "product": {
+                                            "id": 3,
+                                            "countryId": 236,
+                                            "productId": 1,
+                                            "trialTime": null,
+                                            "periodTime": null,
+                                            "productName": "normal",
+                                            "productType": "Non-Consumable",
+                                            "iapIdentifier": "com.example.example_app.premium_0_75",
+                                            "productGroupName": "Premium",
+                                            "periodTimeOfferLength": null
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "success/failure response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/response"
+                                },
+                                "examples": {
+                                    "200": {
+                                        "summary": "Everything worked out fine",
+                                        "value": {
+                                            "status": 200,
+                                            "message": "Light is bright"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/response"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "personal_access_token": []
+                    }
+                ]
+            }
+        },
+        "/accio": {
+            "post": {
+                "summary": "Get current best prices for that user",
+                "operationId": "getIAPs",
+                "requestBody": {
+                    "description": "Current State of User & last cached products",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "state",
+                                    "products"
+                                ],
+                                "type": "object",
+                                "properties": {
+                                    "state": {
+                                        "$ref": "#/components/schemas/state"
+                                    },
+                                    "products": {
+                                        "type": "array",
+                                        "items": {
+                                            "$ref": "#/components/schemas/product"
+                                        }
+                                    }
+                                }
+                            },
+                            "examples": {
+                                "noProducts": {
+                                    "summary": "A request by a device which has no cached products (e.g. it is the first time starting the app).",
+                                    "value": {
+                                        "state": {
+                                            "deviceId": "unknown",
+                                            "systemName": "Android",
+                                            "time": 1593705685,
+                                            "isStrict": true,
+                                            "deviceType": "Handset",
+                                            "deviceBrand": "Android",
+                                            "isEmulator": true,
+                                            "appName": "AN EXAMPLE APP",
+                                            "bundleId": "com.example.example_app",
+                                            "timeZone": "GMT",
+                                            "platform": "Google",
+                                            "systemVersion": "7.1.1",
+                                            "isProduction": true,
+                                            "countryCode": "United States",
+                                            "appVersion": "1.0",
+                                            "storeCode": "US",
+                                            "currencyCode": "USD",
+                                            "timeZoneCode": "GMT+00:00",
+                                            "deviceModel": "Android SDK built for x86",
+                                            "buildNumber": 1
+                                        }
+                                    }
+                                },
+                                "allProductsInactive": {
+                                    "summary": "A request by a device which has cached products (e.g. app was running at least once).",
+                                    "value": {
+                                        "state": {
+                                            "deviceId": "unknown",
+                                            "systemName": "Android",
+                                            "time": 1593705685,
+                                            "isStrict": true,
+                                            "deviceType": "Handset",
+                                            "deviceBrand": "Android",
+                                            "isEmulator": true,
+                                            "appName": "AN EXAMPLE APP",
+                                            "bundleId": "com.example.example_app",
+                                            "timeZone": "GMT",
+                                            "platform": "Google",
+                                            "systemVersion": "7.1.1",
+                                            "isProduction": true,
+                                            "countryCode": "United States",
+                                            "appVersion": "1.0",
+                                            "storeCode": "US",
+                                            "currencyCode": "USD",
+                                            "timeZoneCode": "GMT+00:00",
+                                            "deviceModel": "Android SDK built for x86",
+                                            "buildNumber": 1
+                                        },
+                                        "products": [
+                                            {
+                                                "id": 5,
+                                                "iapIdentifier": "com.example.example_app.premium",
+                                                "productId": 1,
+                                                "productName": "com.example.example_app.premium",
+                                                "productType": "Non-Consumable",
+                                                "periodTime": null,
+                                                "trialTime": null,
+                                                "periodTimeOfferLength": null,
+                                                "productGroupName": "Premium",
+                                                "countryId": 236,
+                                                "recommendationId": 486
+                                            },
+                                            {
+                                                "id": 14,
+                                                "iapIdentifier": "com.example.example_app.premium_plus",
+                                                "productId": 2,
+                                                "productName": "com.example.example_app.premium_plus",
+                                                "productType": "Non-Consumable",
+                                                "periodTime": null,
+                                                "trialTime": null,
+                                                "periodTimeOfferLength": null,
+                                                "productGroupName": "Premium",
+                                                "countryId": 236,
+                                                "recommendationId": 986
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "In success: get the current best iaps",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/productResponse"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/response"
+                                        }
+                                    ]
+                                },
+                                "examples": {
+                                    "200": {
+                                        "summary": "Receive currently best iaps.",
+                                        "value": {
+                                            "status": 200,
+                                            "message": "Sick",
+                                            "products": [
+                                                {
+                                                    "id": 5,
+                                                    "iapIdentifier": "com.example.example_app.premium",
+                                                    "productId": 1,
+                                                    "productName": "premium",
+                                                    "productType": "Non-Consumable",
+                                                    "periodTime": null,
+                                                    "trialTime": null,
+                                                    "periodTimeOfferLength": null,
+                                                    "productGroupName": "Premium",
+                                                    "countryId": 236,
+                                                    "recommendationId": 4006
+                                                },
+                                                {
+                                                    "id": 14,
+                                                    "iapIdentifier": "com.example.example_app.premium_plus",
+                                                    "productId": 2,
+                                                    "productName": "premium_plus",
+                                                    "productType": "Non-Consumable",
+                                                    "periodTime": null,
+                                                    "trialTime": null,
+                                                    "periodTimeOfferLength": null,
+                                                    "productGroupName": "Premium",
+                                                    "countryId": 236,
+                                                    "recommendationId": 4008
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/response"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "personal_access_token": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "productResponse": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/response"
+                    },
+                    {
+                        "required": [
+                            "products"
+                        ],
+                        "type": "object",
+                        "properties": {
+                            "products": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/product"
+                                }
+                            }
+                        }
+                    }
+                ]
+            },
+            "response": {
+                "required": [
+                    "status",
+                    "message"
+                ],
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "message": {
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "response": {
+                        "status": 200,
+                        "message": "Light is bright!"
+                    }
+                }
+            },
+            "state": {
+                "required": [
+                    "appName",
+                    "appVersion",
+                    "buildNumber",
+                    "bundleId",
+                    "countryCode",
+                    "currencyCode",
+                    "deviceBrand",
+                    "deviceId",
+                    "deviceModel",
+                    "deviceType",
+                    "isEmulator",
+                    "isProduction",
+                    "isStrict",
+                    "platform",
+                    "storeCode",
+                    "systemName",
+                    "systemVersion",
+                    "time",
+                    "timeZone",
+                    "timeZoneCode"
+                ],
+                "type": "object",
+                "properties": {
+                    "appName": {
+                        "description": "Your apps name.",
+                        "type": "string"
+                    },
+                    "appVersion": {
+                        "description": "Your current app version.",
+                        "type": "string"
+                    },
+                    "buildNumber": {
+                        "type": "integer",
+                        "description": "Your current build number.",
+                        "format": "int64"
+                    },
+                    "bundleId": {
+                        "description": "The bundle-Id of your app (it doesn't matter whether it's iOS or Andoid).",
+                        "type": "string"
+                    },
+                    "countryCode": {
+                        "description": "The users current country location. Use the [ISO 3166](https://www.iso.org/iso-3166-country-codes.html) standard! From iOS devices you receive the alpha-2 code and from Android the alpha-3 code. So use depending on the device the standard accordingly.",
+                        "type": "string"
+                    },
+                    "currencyCode": {
+                        "type": "string"
+                    },
+                    "deviceBrand": {
+                        "type": "string"
+                    },
+                    "deviceId": {
+                        "type": "string"
+                    },
+                    "deviceModel": {
+                        "type": "string"
+                    },
+                    "deviceType": {
+                        "type": "string"
+                    },
+                    "isEmulator": {
+                        "type": "boolean"
+                    },
+                    "isProduction": {
+                        "description": "Let's the system know, whether you're currently just implementing Mage or if it is running live. Always set FALSE when implementing, so Mage won't learn your test purchases!",
+                        "type": "boolean"
+                    },
+                    "isStrict": {
+                        "type": "boolean"
+                    },
+                    "platform": {
+                        "description": "Whether we're in the Apple App Store (use 'Apple') or in the Google Play Store (use 'Google')",
+                        "type": "string"
+                    },
+                    "storeCode": {
+                        "description": "The users current store location. Use the [ISO 3166](https://www.iso.org/iso-3166-country-codes.html) standard! From iOS devices you receive the alpha-3 code and from Android the alpha-2 code. So use depending on the device the standard accordingly.",
+                        "type": "string"
+                    },
+                    "systemName": {
+                        "type": "string"
+                    },
+                    "systemVersion": {
+                        "type": "string"
+                    },
+                    "time": {
+                        "type": "integer",
+                        "description": "Current time (unix-timestamp).",
+                        "format": "int64"
+                    },
+                    "timeZone": {
+                        "description": "Code of timezone.",
+                        "type": "string"
+                    },
+                    "timeZoneCode": {
+                        "description": "Code of timezone plus offset.",
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "state": {
+                        "time": 1593705685,
+                        "appName": "AN EXAMPLE APP",
+                        "bundleId": "com.example.example_app",
+                        "deviceId": "unknown",
+                        "isStrict": true,
+                        "platform": "Google",
+                        "timeZone": "GMT",
+                        "storeCode": "US",
+                        "appVersion": "1.0",
+                        "deviceType": "Handset",
+                        "isEmulator": true,
+                        "systemName": "Android",
+                        "buildNumber": 1,
+                        "countryCode": "United States",
+                        "deviceBrand": "Android",
+                        "deviceModel": "Android SDK built for x86",
+                        "currencyCode": "USD",
+                        "isProduction": true,
+                        "timeZoneCode": "GMT+00:00",
+                        "systemVersion": "7.1.1"
+                    }
+                }
+            },
+            "product": {
+                "required": [
+                    "id",
+                    "iapIdentifier",
+                    "productId",
+                    "productName",
+                    "productType",
+                    "periodTime",
+                    "trialTime",
+                    "periodTimeOfferLength",
+                    "productGroupName",
+                    "countryId",
+                    "recommendationId"
+                ],
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "Internal IAP Id",
+                        "format": "int64"
+                    },
+                    "iapIdentifier": {
+                        "type": "string",
+                        "description": "Identifier, used by apple/google, for your in-app purchase."
+                    },
+                    "productId": {
+                        "type": "integer",
+                        "description": "Internal Product Id",
+                        "format": "int64"
+                    },
+                    "productName": {
+                        "type": "string",
+                        "description": "Name of your product"
+                    },
+                    "productType": {
+                        "type": "string",
+                        "description": "Type of your product (Subscription, Consumable, Non-Consumable)"
+                    },
+                    "periodTime": {
+                        "type": "number",
+                        "description": "For subscriptions only. Billing cycles for your subscription.",
+                        "format": "float"
+                    },
+                    "trialTime": {
+                        "type": "number",
+                        "description": "For subscriptions only. Duration of the trial time for your subscription.",
+                        "format": "float"
+                    },
+                    "periodTimeOfferLength": {
+                        "type": "number",
+                        "description": "For subscriptions only. Duration of the reduced offer lenght.",
+                        "format": "float"
+                    },
+                    "productGroupName": {
+                        "type": "string",
+                        "description": "Name of the productgroup your product belongs to."
+                    },
+                    "countryId": {
+                        "type": "integer",
+                        "description": "Id of the country which your iap is currently served in.",
+                        "format": "int64"
+                    },
+                    "recommendationId": {
+                        "type": "integer",
+                        "description": "Id of the recommendation, which suggested this price.",
+                        "format": "int64"
+                    }
+                },
+                "example": {
+                    "product": {
+                        "id": 3,
+                        "countryId": 236,
+                        "productId": 1,
+                        "trialTime": null,
+                        "periodTime": null,
+                        "productName": "normal",
+                        "productType": "Non-Consumable",
+                        "iapIdentifier": "com.example.example_app.premium_0_75",
+                        "productGroupName": "Premium",
+                        "periodTimeOfferLength": null
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "personal_access_token": {
+                "type": "apiKey",
+                "description": "Personal App-API-Key to access the protected resources.",
+                "name": "Token",
+                "in": "header"
+            }
+        }
+    }
+}
