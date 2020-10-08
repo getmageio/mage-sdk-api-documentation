@@ -12,7 +12,7 @@ The API is documented according to the [openapi3.0](https://github.com/OAI/OpenA
 - [React Native](https://github.com/getmageio/mage-react-native-sdk)
 
 # Recommended Usage
-The Mage SDK API is kept quite simple with just two calls. A more beautiful description can be found [here](https://hub.apitree.com/FlyingLasagna/privatecheck/).
+The Mage SDK API is kept quite simple with just two calls. A more beautiful description can be found [here](https://hub.apitree.com/FlyingLasagna/privatecheck/). Sadly APITree does not show all openAPI3.0 definitions, so please have a look at this open source github repository for a complete documentation.
 
 The servers URL is: `https://room-of-requirement.getmage.io`<br>
 Current Version: 1.1.0<br>
