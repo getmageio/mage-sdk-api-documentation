@@ -2,15 +2,26 @@
     "openapi": "3.0.0",
     "info": {
         "title": "Mage SDK API Documentation",
+        "description": "[Mage](https://www.getmage.io/) is a price optimization tool for in-app purchases.<br> Forget continuously setting up A/B-Tests or hiring data science teams for your app pricing! Mage fully automates simultaneous price testing & setting for in-app purchases in over 170 countries separately. So you don't have to deal with it!<br> Get started with [Mage](https://www.getmage.io/) to scale your products worldwide!<br><br> This is a documentation of the Mage API used by the SDKs. In case you're interested in writing your own bridges feel free to do so or even better: publish your own open-source SDK.<br> The API is documented according to the [openapi3.0](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md) standard.",
+        "contact": {
+            "name": "Mage Labs GmbH i.G.",
+            "url": "https://www.getmage.io/"
+        },
         "license": {
             "name": "MIT"
         },
-        "version": "1.0.3"
+        "version": "1.1.0"
     },
+    "servers": [
+        {
+            "url": "https://room-of-requirement.getmage.io/v1"
+        }
+    ],
     "paths": {
         "/lumos": {
             "post": {
                 "summary": "Analyze Purchase",
+                "description": "Submit the currently purchased IAP with the users' state. Every submited IAP will then be analyzed and used for future models to determine your optimal pricing.",
                 "operationId": "newPurchase",
                 "requestBody": {
                     "description": "Purchased iap & current State of User",
@@ -67,7 +78,8 @@
                                             "productType": "Non-Consumable",
                                             "iapIdentifier": "com.example.example_app.premium_0_75",
                                             "productGroupName": "Premium",
-                                            "periodTimeOfferLength": null
+                                            "periodTimeOfferLength": null,
+                                            "recommendationId": 4006
                                         }
                                     }
                                 }
@@ -116,6 +128,7 @@
         "/accio": {
             "post": {
                 "summary": "Get current best prices for that user",
+                "description": "Receive the latest optimal pricing packages for the users' current state.",
                 "operationId": "getIAPs",
                 "requestBody": {
                     "description": "Current State of User & last cached products",
@@ -123,8 +136,7 @@
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "state",
-                                    "products"
+                                    "state"
                                 ],
                                 "type": "object",
                                 "properties": {
@@ -370,9 +382,14 @@
                     "timeZoneCode"
                 ],
                 "type": "object",
+                "description": "Information about the current users state.",
                 "properties": {
                     "appName": {
                         "description": "Your apps name.",
+                        "type": "string"
+                    },
+                    "appUserId": {
+                        "description": "Your user identifier for tracking the subscription status. This is important for subscriptions to track how long they run, if they convert from trial phases and so on. To notify Mage of subscription state changes please use the web API which can be found [here](#TODO).",
                         "type": "string"
                     },
                     "appVersion": {
@@ -389,25 +406,31 @@
                         "type": "string"
                     },
                     "countryCode": {
-                        "description": "The users current country location. Use the [ISO 3166](https://www.iso.org/iso-3166-country-codes.html) standard! From iOS devices you receive the alpha-2 code and from Android the alpha-3 code. So use depending on the device the standard accordingly.",
+                        "description": "The users current country location. Use the [ISO 3166](https://www.iso.org/iso-3166-country-codes.html) standard! From iOS devices, you receive the alpha-2 code and from Android the alpha-3 code. So use depending on the device the standard accordingly.",
                         "type": "string"
                     },
                     "currencyCode": {
+                        "description": "The currency code according to the [ISO 4217](https://www.iso.org/iso-4217-currency-codes.html) standard.",
                         "type": "string"
                     },
                     "deviceBrand": {
+                        "description": "Manufacturer of the device your app is running on (e.g. 'Apple', 'google', 'Nokia', etc.).",
                         "type": "string"
                     },
                     "deviceId": {
+                        "description": "A more specific identifier of the device model your app is running on (e.g. 'iPhone10,6', 'iPhone8,4', etc.).",
                         "type": "string"
                     },
                     "deviceModel": {
+                        "description": "The Model of the device your app is running on (e.g. 'iPhone X', 'iPhone 11 Pro', etc.).",
                         "type": "string"
                     },
                     "deviceType": {
+                        "description": "Which kind of device your app is running on (e.g. 'Handset' or 'Tablet').",
                         "type": "string"
                     },
                     "isEmulator": {
+                        "description": "Let's the system know, whether you're currently just implementing Mage and running it within an emulator. Always set TRUE when implementing and using an emulator so that Mage won't learn your test purchases! But don't forget to turn it of, when you are running it in production!",
                         "type": "boolean"
                     },
                     "isProduction": {
@@ -415,20 +438,23 @@
                         "type": "boolean"
                     },
                     "isStrict": {
+                        "description": "A flag to let the SDK crash when errors occur. This way, you can test if you set up the SDK correctly.",
                         "type": "boolean"
                     },
                     "platform": {
-                        "description": "Whether we're in the Apple App Store (use 'Apple') or in the Google Play Store (use 'Google')",
+                        "description": "Whether we're in the Apple App Store (use 'Apple') or in the Google Play Store (use 'Google').",
                         "type": "string"
                     },
                     "storeCode": {
-                        "description": "The users current store location. Use the [ISO 3166](https://www.iso.org/iso-3166-country-codes.html) standard! From iOS devices you receive the alpha-3 code and from Android the alpha-2 code. So use depending on the device the standard accordingly.",
+                        "description": "The users' current store location. Use the [ISO 3166](https://www.iso.org/iso-3166-country-codes.html) standard! From iOS devices, you receive the alpha-3 code and from Android the alpha-2 code. So use depending on the device the standard accordingly.",
                         "type": "string"
                     },
                     "systemName": {
+                        "description": "OS name (e.g. 'Android' or 'iOS').",
                         "type": "string"
                     },
                     "systemVersion": {
+                        "description": "Current OS version, on which the app is running.",
                         "type": "string"
                     },
                     "time": {
@@ -485,6 +511,7 @@
                     "recommendationId"
                 ],
                 "type": "object",
+                "description": "The Mage internal product for your different price levels.",
                 "properties": {
                     "id": {
                         "type": "integer",
@@ -529,7 +556,7 @@
                     },
                     "countryId": {
                         "type": "integer",
-                        "description": "Id of the country which your iap is currently served in.",
+                        "description": "Id of the country, in which your IAP is currently served.",
                         "format": "int64"
                     },
                     "recommendationId": {
@@ -549,7 +576,8 @@
                         "productType": "Non-Consumable",
                         "iapIdentifier": "com.example.example_app.premium_0_75",
                         "productGroupName": "Premium",
-                        "periodTimeOfferLength": null
+                        "periodTimeOfferLength": null,
+                        "recommendationId": 4006
                     }
                 }
             }
